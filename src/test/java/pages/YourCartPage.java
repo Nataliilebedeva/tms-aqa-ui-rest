@@ -8,6 +8,8 @@ import org.openqa.selenium.WebElement;
 
 public class YourCartPage extends BasePage {
 
+    private final static String endpoint = "cart.html";
+
     //1. Селекоторы
     private final static By title_button_By = By.id("continue-shopping");
     private final static By checkout_button = By.id("checkout");
@@ -20,7 +22,7 @@ public class YourCartPage extends BasePage {
 
     @Override
     protected void openPage() {
-        driver.get("https://www.saucedemo.com/cart.html");
+        driver.get(properties.getURL() + endpoint);
     }
 
     @Override

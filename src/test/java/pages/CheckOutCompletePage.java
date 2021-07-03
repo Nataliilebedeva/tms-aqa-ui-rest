@@ -7,6 +7,9 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 
 public class CheckOutCompletePage extends BasePage {
+
+    private final static String endpoint = "checkout-complete.html";
+
     private static final By title_picture_By = By.className("pony_express");
     private static final By complete_text_By = By.xpath("//*[contains(text(), 'Your order has been dispatched')]");
 
@@ -17,7 +20,7 @@ public class CheckOutCompletePage extends BasePage {
 
     @Override
     protected void openPage() {
-        driver.get("https://www.saucedemo.com/checkout-complete.html");
+        driver.get(properties.getURL() + endpoint);
     }
 
     @Override

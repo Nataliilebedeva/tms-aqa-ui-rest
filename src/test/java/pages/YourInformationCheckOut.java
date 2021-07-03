@@ -8,6 +8,8 @@ import org.openqa.selenium.WebElement;
 
 public class YourInformationCheckOut extends BasePage {
 
+    private final static String endpoint = "checkout-step-one.html";
+
     //Селекторы
     private final static By title_button_By = By.id("cancel");
     private final static By firs_name_Input_By = By.id("first-name");
@@ -23,7 +25,7 @@ public class YourInformationCheckOut extends BasePage {
 
     @Override
     protected void openPage() {
-        driver.get("https://www.saucedemo.com/checkout-step-one.html");
+        driver.get(properties.getURL() + endpoint);
     }
 
     @Override

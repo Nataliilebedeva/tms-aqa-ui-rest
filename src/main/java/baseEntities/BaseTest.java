@@ -1,26 +1,29 @@
 package baseEntities;
 
-import io.github.bonigarcia.wdm.WebDriverManager;
-import io.github.bonigarcia.wdm.config.DriverManagerType;
+import core.BrowserService;
+import core.ReadProperties;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.chrome.ChromeDriver;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.BeforeTest;
-import org.testng.annotations.Test;
 
 public class BaseTest {
     protected WebDriver driver;
+    protected ReadProperties properties;
 
+    //перед всеми тестами
     @BeforeTest
     public void setupTest(){
-        WebDriverManager.getInstance(DriverManagerType.CHROME).setup();
+      //  WebDriverManager.getInstance(DriverManagerType.CHROME).setup();
+        //дублирование кода
+        properties = new ReadProperties();
     }
 
+    //перед каждым тестом
     @BeforeMethod
     public void setupMethod() {
-        // WebDriverManager.getInstance(DriverManagerType.CHROME).setup();
-        driver = new ChromeDriver();
+        // new и перед каждым методом, потому что будем рассматривать параллельизацию методов
+        driver = new BrowserService().getDriver();
     }
 
     @AfterMethod

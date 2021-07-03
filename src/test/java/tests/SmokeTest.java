@@ -1,154 +1,118 @@
 package tests;
 
 import baseEntities.BaseTest;
-import io.github.bonigarcia.wdm.WebDriverManager;
-import io.github.bonigarcia.wdm.config.DriverManagerType;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.chrome.ChromeDriver;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import pages.*;
+import steps.AddtoCartStep;
+import steps.CheckOutStep;
+import steps.LoginStep;
 
 public class SmokeTest extends BaseTest {
 
+
+    //1. Проверка на вход в систему стандарный пользователь
     @Test
     public void positiveLoginTestFirstUser() {
+        LoginStep loginStep =new LoginStep(driver);
+        loginStep.login(properties.getUsername(), properties.getPassword());
 
-        LoginPage loginPage = new LoginPage(driver, true);
-        loginPage.setUsername("standard_user");
-        loginPage.setPassword("secret_sauce");
-        loginPage.clickLoginButton();
-
-        ProductsPage productsPage = new ProductsPage(driver, false);
-
-        Assert.assertEquals(productsPage.getTitleText(), "PRODUCTS", "Страница Products не открылась");
-
+        Assert.assertEquals(new ProductsPage(driver, true).getTitleText(), "PRODUCTS", "Страница Products не открылась");
     }
 
+    //2. Заваленный тест на locked_out_user
     @Test
     public void positiveLoginTestSecondUser() {
+        LoginStep loginStep =new LoginStep(driver);
+        loginStep.login("locked_out_user", "secret_sauce");
 
-        LoginPage loginPage = new LoginPage(driver, true);
-        loginPage.setUsername("locked_out_user");
-        loginPage.setPassword("secret_sauce");
-        loginPage.clickLoginButton();
-
-        ProductsPage productsPage = new ProductsPage(driver, false);
-
-        Assert.assertEquals(productsPage.getTitleText(), "PRODUCTS", "Страница Products не открылась");
-
+        Assert.assertEquals(new ProductsPage(driver, true).getTitleText(), "PRODUCTS", "Страница Products не открылась");
     }
 
+    //3. Проверка на вход в систему problem_user
     @Test
     public void positiveLoginTestThirdUser() {
+        LoginStep loginStep =new LoginStep(driver);
+        loginStep.login("problem_user", "secret_sauce");
 
-        LoginPage loginPage = new LoginPage(driver, true);
-        loginPage.setUsername("problem_user");
-        loginPage.setPassword("secret_sauce");
-        loginPage.clickLoginButton();
-
-        ProductsPage productsPage = new ProductsPage(driver, false);
-
-        Assert.assertEquals(productsPage.getTitleText(), "PRODUCTS", "Страница Products не открылась");
-
+        //ProductsPage productsPage = new ProductsPage(driver, true);
+        Assert.assertEquals(new ProductsPage(driver,true).getTitleText(), "PRODUCTS", "Страница Products не открылась");
     }
 
-
+    //4. Проверка на ошибку при некорректном логине и пароле
     @Test
     public void negativeLoginTest() {
-        LoginPage loginPage = new LoginPage(driver, true);
-        loginPage.setUsername("fjskf");
-        loginPage.setPassword("1111");
-        loginPage.clickLoginButton();
+        LoginStep loginStep =new LoginStep(driver);
+        loginStep.login("fjskf", "1111");
 
-        //Assert.assertTrue(loginPage.getErrorLabel().isDisplayed());
-        Assert.assertEquals(loginPage.getErrorLabel().getText(), "Epic sadface: Username and password do not match any user in this service");
+        //страницу надо заново инициализировать, где нужно передать драйвер
+        //и false, потому что мы говорим, что страница уже открыта
+        Assert.assertEquals(new LoginPage(driver,false).getErrorLabel().getText(), "Epic sadface: Username and password do not match any user in this service");
     }
 
+
+    //5. Проверка на добавление товара в корзину с Products Page
     @Test
     public void positiveAddProductsToCart() {
-        LoginPage loginPage = new LoginPage(driver, true);
-        loginPage.setUsername("standard_user");
-        loginPage.setPassword("secret_sauce");
-        loginPage.clickLoginButton();
+        LoginStep loginStep =new LoginStep(driver);
+        loginStep.login(properties.getUsername(), properties.getPassword());
 
-        ProductsPage productsPage = new ProductsPage(driver, false);
-        productsPage.clickAddToCartButton();
+        AddtoCartStep addtoCartStep = new AddtoCartStep(driver);
+        addtoCartStep.addToCartProduct("Sauce Labs Bolt T-Shirt");
 
-        Assert.assertEquals(productsPage.getLabelCartNull().getText(), "1");
+        Assert.assertEquals(new ProductsPage(driver,true).getLabelCartNull().getText(), "1");
     }
 
+
+    //6. Проверка на добавление в корзину со страницы одного товара
     @Test
     public void positiveAddProductsToCart2() {
-        LoginPage loginPage = new LoginPage(driver, true);
-        loginPage.setUsername("standard_user");
-        loginPage.setPassword("secret_sauce");
-        loginPage.clickLoginButton();
+        LoginStep loginStep =new LoginStep(driver);
+        loginStep.login(properties.getUsername(), properties.getPassword());
 
-        ProductsPage productsPage = new ProductsPage(driver, false);
-        productsPage.clickProductButton();
+        AddtoCartStep addtoCartStep = new AddtoCartStep(driver);
+        addtoCartStep.addToCartProductBySomeProductPage("Sauce Labs Onesie");
 
-        SomeProductPage someProductPage = new SomeProductPage(driver, false);
-        someProductPage.clickAddToCartButton();
-
-        Assert.assertEquals(someProductPage.getLabelCartNull().getText(), "1");
+      Assert.assertEquals(new SomeProductPage(driver,true).getLabelCartNull().getText(), "1");
     }
 
+    //7. Проверка на удаление товара с карзины со страницы Products через кнопку Remove
     @Test
     public void positiveDeleteProductsToCart() {
-        LoginPage loginPage = new LoginPage(driver, true);
-        loginPage.setUsername("standard_user");
-        loginPage.setPassword("secret_sauce");
-        loginPage.clickLoginButton();
+        LoginStep loginStep =new LoginStep(driver);
+        loginStep.login(properties.getUsername(), properties.getPassword());
 
-        ProductsPage productsPage = new ProductsPage(driver, false);
-        productsPage.clickAddToCartButton();
-        productsPage.clickAddToCartOtherProductButton();
-        productsPage.clickRemoveToCartOtherProductButton();
-
-
-        Assert.assertEquals(productsPage.getLabelCartNull().getText(), "1");
+        AddtoCartStep addtoCartStep = new AddtoCartStep(driver);
+        addtoCartStep.addToCartProduct("Sauce Labs Bolt T-Shirt");
+        addtoCartStep.addToCartProduct("Sauce Labs Backpack");
+        addtoCartStep.addToCartProduct("Sauce Labs Backpack");
+        Assert.assertEquals(new ProductsPage(driver, true).getLabelCartNull().getText(), "1");
     }
 
+    //8. Проверка на удаление товара с карзины со страницы Products через кнопку Remove другим способом
     @Test
     public void positiveDeleteProductsToCart2() {
-        LoginPage loginPage = new LoginPage(driver, true);
-        loginPage.setUsername("standard_user");
-        loginPage.setPassword("secret_sauce");
-        loginPage.clickLoginButton();
+        LoginStep loginStep =new LoginStep(driver);
+        loginStep.login(properties.getUsername(), properties.getPassword());
 
-        ProductsPage productsPage = new ProductsPage(driver, false);
-        productsPage.clickAddToCartOtherProductButton();
-        productsPage.clickRemoveToCartOtherProductButton();
+        AddtoCartStep addtoCartStep = new AddtoCartStep(driver);
+        addtoCartStep.addToCartProduct("Sauce Labs Backpack");
+        addtoCartStep.addToCartProduct("Sauce Labs Backpack");
 
-        Assert.assertThrows(org.openqa.selenium.NoSuchElementException.class, productsPage::getLabelCartNull);
+        Assert.assertThrows(org.openqa.selenium.NoSuchElementException.class, new ProductsPage(driver, true)::getLabelCartNull);
     }
 
+    //9. Тест на оплату
     @Test
     public void positiveChekOut() {
-        LoginPage loginPage = new LoginPage(driver, true);
-        loginPage.setUsername("standard_user");
-        loginPage.setPassword("secret_sauce");
-        loginPage.clickLoginButton();
+        LoginStep loginStep =new LoginStep(driver);
+        loginStep.login(properties.getUsername(), properties.getPassword());
 
-        ProductsPage productsPage = new ProductsPage(driver, false);
-        productsPage.clickAddToCartOtherProductButton();
-        productsPage.clickCartButton();
+        CheckOutStep checkOutStep = new CheckOutStep(driver);
+        checkOutStep.checkOut("Sauce Labs Fleece Jacket");
 
-        YourCartPage yourCartPage = new YourCartPage(driver, false);
-        yourCartPage.clickCheckOutButton();
+        Assert.assertEquals(new CheckOutCompletePage(driver,true).getCompleteTextBy().getText(), "Your order has been dispatched, and will arrive just as fast as the pony can get there!");
 
-        YourInformationCheckOut yourInformationCheckOut = new YourInformationCheckOut(driver, false);
-        yourInformationCheckOut.setUserFirstName("Nat");
-        yourInformationCheckOut.setUserLastName("Leb");
-        yourInformationCheckOut.setZipCode("1234");
-        yourInformationCheckOut.clickContinueButton();
-
-        CheckOutOverviewPage checkOutOverviewPage = new CheckOutOverviewPage(driver, false);
-        checkOutOverviewPage.setButtonFinish();
-
-        CheckOutCompletePage checkOutCompletePage = new CheckOutCompletePage(driver, false);
-        Assert.assertEquals(checkOutCompletePage.getCompleteTextBy().getText(), "Your order has been dispatched, and will arrive just as fast as the pony can get there!");
     }
 
 

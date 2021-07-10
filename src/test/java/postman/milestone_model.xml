@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<root>
+    <id>15</id>
+    <name>Milestone 3.0</name>
+    <description />
+    <start_on />
+    <started_on>1625586529</started_on>
+    <is_started>true</is_started>
+    <due_on>1626783718</due_on>
+    <is_completed>false</is_completed>
+    <completed_on />
+    <project_id>22</project_id>
+    <parent_id />
+    <refs />
+    <url>https://aqa06onl01.testrail.io/index.php?/milestones/view/15</url>
+</root>

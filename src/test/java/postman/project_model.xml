@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<root>
+    <id>22</id>
+    <name>Some_Test2_NatLeb</name>
+    <announcement>:)))</announcement>
+    <show_announcement>true</show_announcement>
+    <is_completed>false</is_completed>
+    <completed_on />
+    <suite_mode>3</suite_mode>
+    <url>https://aqa06onl01.testrail.io/index.php?/projects/overview/22</url>
+</root>

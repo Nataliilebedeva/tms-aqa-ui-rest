@@ -1,7 +1,7 @@
 package tests;
 
 import baseEntities.BaseTest;
-import io.qameta.allure.Description;
+import io.qameta.allure.*;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import pages.*;
@@ -13,6 +13,11 @@ public class SmokeTest extends BaseTest {
 
 
     //1. Проверка на вход в систему стандарный пользователь
+
+    @Link(value = "ссылка", url = "https://docs.qameta.io/allure/#_testng")
+    @Link(name = "#_testng",type = "mylink")
+    @TmsLink("12")
+    @Issue("13")
     @Description("Тест на логирование аттрибутами,соответсвующими standard_user")
     @Test (description="Позитивный тест на вход в систему №1")
     public void positiveLoginTestFirstUser() {
@@ -23,6 +28,10 @@ public class SmokeTest extends BaseTest {
     }
 
     //2. Заваленный тест на locked_out_user
+    @Link(value = "ссылка", url = "https://docs.qameta.io/allure/#_testng")
+    @Link(name = "#_testng",type = "mylink")
+    @TmsLink("12")
+    @Issue("13")
     @Description("Тест на логирование аттрибутами,соответсвующими locked_out_user")
     @Test (description="Позитивный тест на вход в систему №2")
     public void positiveLoginTestSecondUser() {
@@ -33,6 +42,10 @@ public class SmokeTest extends BaseTest {
     }
 
     //3. Проверка на вход в систему problem_user
+    @Link(value = "ссылка", url = "https://docs.qameta.io/allure/#_testng")
+    @Link(name = "#_testng",type = "mylink")
+    @TmsLink("12")
+    @Issue("13")
     @Description("Тест на логирование аттрибутами,соответсвующими problem_user")
     @Test (description="Позитивный тест на вход в систему №3")
     public void positiveLoginTestThirdUser() {
@@ -43,6 +56,10 @@ public class SmokeTest extends BaseTest {
     }
 
     //4. Проверка на ошибку при некорректном логине и пароле
+    @Link(value = "ссылка", url = "https://docs.qameta.io/allure/#_testng")
+    @Link(name = "#_testng",type = "mylink")
+    @TmsLink("12")
+    @Issue("13")
     @Description("Тест на логирование некорректными атрибутами")
     @Test (description="Негативный тест на вход в систему")
     public void negativeLoginTest() {
@@ -54,6 +71,10 @@ public class SmokeTest extends BaseTest {
 
 
     //5. Проверка на добавление товара в корзину с Products Page
+    @Link(value = "ссылка", url = "https://docs.qameta.io/allure/#_testng")
+    @Link(name = "#_testng",type = "mylink")
+    @TmsLink("12")
+    @Issue("13")
     @Description("Тест на добавление товара в корзину со страницы Products Page")
     @Test (description="Позитивный тест на добавление товара в корзину №1")
     public void positiveAddProductsToCart() {
@@ -68,6 +89,10 @@ public class SmokeTest extends BaseTest {
 
 
     //6. Проверка на добавление в корзину со страницы одного товара
+    @Link(value = "ссылка", url = "https://docs.qameta.io/allure/#_testng")
+    @Link(name = "#_testng",type = "mylink")
+    @TmsLink("12")
+    @Issue("13")
     @Description("Тест на добавление товара в корзину со страницы какого-либо товара")
     @Test (description="Позитивный тест на добавление товара в корзину №2")
     public void positiveAddProductsToCart2() {
@@ -81,6 +106,10 @@ public class SmokeTest extends BaseTest {
     }
 
     //7. Проверка на удаление товара с карзины со страницы Products через кнопку Remove
+    @Link(value = "ссылка", url = "https://docs.qameta.io/allure/#_testng")
+    @Link(name = "#_testng",type = "mylink")
+    @TmsLink("12")
+    @Issue("13")
     @Description("Позитивный тест на удаление товара с карзины со страницы Products через кнопку Remove")
     @Test (description="Позитивный тест на удаление товара с карзины №1")
     public void positiveDeleteProductsToCart() {
@@ -95,6 +124,10 @@ public class SmokeTest extends BaseTest {
     }
 
     //8. Проверка на удаление товара с карзины со страницы Products через кнопку Remove другим способом
+    @Link(value = "ссылка", url = "https://docs.qameta.io/allure/#_testng")
+    @Link(name = "#_testng",type = "mylink")
+    @TmsLink("12")
+    @Issue("13")
     @Description("Позитивный тест на удаление товара с карзины со страницы Products через кнопку Remove другим способом")
     @Test(description="Позитивный тест на удаление товара с карзины №2")
     public void positiveDeleteProductsToCart2() {
@@ -109,6 +142,10 @@ public class SmokeTest extends BaseTest {
     }
 
     //9. Тест на оплату
+    @Link(value = "ссылка", url = "https://docs.qameta.io/allure/#_testng")
+    @Link(name = "#_testng",type = "mylink")
+    @TmsLink("12")
+    @Issue("13")
     @Test (description="Позитивный тест оплату")
     public void positiveChekOut() {
         LoginStep loginStep =new LoginStep(driver);
@@ -122,9 +159,6 @@ public class SmokeTest extends BaseTest {
         checkOutStep.moveToCheckOverviewOutPageAndFinishCheckOut();
 
         Assert.assertEquals(new CheckOutCompletePage(driver,true).getCompleteTextBy().getText(), "Your order has been dispatched, and will arrive just as fast as the pony can get there!");
-
     }
-
-
 }
 

@@ -2,6 +2,7 @@ package baseEntities;
 
 import core.ReadProperties;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.support.PageFactory;
 
 public abstract class BasePage {
     protected static final int WAIT_FOR_PAGE_LOADING_SEC = 15;
@@ -15,8 +16,9 @@ public abstract class BasePage {
 
     public BasePage(WebDriver driver, boolean openPageByURL) {
         this.driver = driver;
-        //инициализация переменной properties
         properties = new ReadProperties();
+
+        PageFactory.initElements(this.driver, this);
 
         if (openPageByURL) {
             openPage();

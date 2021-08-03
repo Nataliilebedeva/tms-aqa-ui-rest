@@ -2,6 +2,7 @@ package tests;
 
 import baseEntities.BaseTest;
 import io.qameta.allure.*;
+import org.openqa.selenium.TimeoutException;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import pages.*;
@@ -11,9 +12,8 @@ import steps.LoginStep;
 
 public class SmokeTest extends BaseTest {
 
-
+//___________________________________________Логирование____________________________________________________________
     //1. Проверка на вход в систему стандарный пользователь
-
     @Link(value = "ссылка", url = "https://docs.qameta.io/allure/#_testng")
     @Link(name = "#_testng",type = "mylink")
     @TmsLink("12")
@@ -66,10 +66,10 @@ public class SmokeTest extends BaseTest {
         LoginStep loginStep =new LoginStep(driver);
         loginStep.loginWithIncorrectAttribute();
 
-        Assert.assertEquals(new LoginPage(driver,false).getErrorLabel().getText(), "Epic sadface: Username and password do not match any user in this service");
+        Assert.assertEquals(new LoginPage(driver,false).errorLabel.getText(), "Epic sadface: Username and password do not match any user in this service");
     }
 
-
+    //___________________________________________Добавление товара в корзину________________________________________
     //5. Проверка на добавление товара в корзину с Products Page
     @Link(value = "ссылка", url = "https://docs.qameta.io/allure/#_testng")
     @Link(name = "#_testng",type = "mylink")
@@ -77,14 +77,15 @@ public class SmokeTest extends BaseTest {
     @Issue("13")
     @Description("Тест на добавление товара в корзину со страницы Products Page")
     @Test (description="Позитивный тест на добавление товара в корзину №1")
-    public void positiveAddProductsToCart() {
+    public void positiveAddProductsToCart() throws InterruptedException {
         LoginStep loginStep =new LoginStep(driver);
         loginStep.loginWithCorrectAttribute(properties.getUsername(), properties.getPassword());
 
         AddtoCartStep addtoCartStep = new AddtoCartStep(driver);
         addtoCartStep.addToCartProduct("Sauce Labs Bolt T-Shirt");
 
-        Assert.assertEquals(new ProductsPage(driver,true).getLabelCartNull().getText(), "1");
+        Thread.sleep(2000);
+        Assert.assertEquals(new ProductsPage(driver,true).labelCart.getText(), "1");
     }
 
 
@@ -102,8 +103,11 @@ public class SmokeTest extends BaseTest {
         AddtoCartStep addtoCartStep = new AddtoCartStep(driver);
         addtoCartStep.addToCartProductBySomeProductPage("Sauce Labs Onesie");
 
-      Assert.assertEquals(new SomeProductPage(driver,true).getLabelCartNull().getText(), "1");
+      Assert.assertEquals(new SomeProductPage(driver,true).labelCart.getText(), "1");
     }
+
+
+    //___________________________________________Удаление товара из корзины________________________________________
 
     //7. Проверка на удаление товара с карзины со страницы Products через кнопку Remove
     @Link(value = "ссылка", url = "https://docs.qameta.io/allure/#_testng")
@@ -120,7 +124,7 @@ public class SmokeTest extends BaseTest {
         addtoCartStep.addToCartProduct("Sauce Labs Bolt T-Shirt");
         addtoCartStep.addToCartProduct("Sauce Labs Backpack");
         addtoCartStep.addToCartProduct("Sauce Labs Backpack");
-        Assert.assertEquals(new ProductsPage(driver, true).getLabelCartNull().getText(), "1");
+        Assert.assertEquals(new ProductsPage(driver, true).labelCart.getText(), "1");
     }
 
     //8. Проверка на удаление товара с карзины со страницы Products через кнопку Remove другим способом
@@ -129,8 +133,8 @@ public class SmokeTest extends BaseTest {
     @TmsLink("12")
     @Issue("13")
     @Description("Позитивный тест на удаление товара с карзины со страницы Products через кнопку Remove другим способом")
-    @Test(description="Позитивный тест на удаление товара с карзины №2")
-    public void positiveDeleteProductsToCart2() {
+    @Test(description="Позитивный тест на удаление товара с карзины №2", expectedExceptions = TimeoutException.class)
+    public void positiveDeleteProductsToCart2() throws InterruptedException {
         LoginStep loginStep =new LoginStep(driver);
         loginStep.loginWithCorrectAttribute(properties.getUsername(), properties.getPassword());
 
@@ -138,8 +142,10 @@ public class SmokeTest extends BaseTest {
         addtoCartStep.addToCartProduct("Sauce Labs Backpack");
         addtoCartStep.addToCartProduct("Sauce Labs Backpack");
 
-        Assert.assertThrows(org.openqa.selenium.NoSuchElementException.class, new ProductsPage(driver, true)::getLabelCartNull);
+        waits.waitForVisibilityElement(ProductsPage.labelCart);
     }
+
+    //___________________________________________Оплата________________________________________
 
     //9. Тест на оплату
     @Link(value = "ссылка", url = "https://docs.qameta.io/allure/#_testng")
@@ -158,7 +164,7 @@ public class SmokeTest extends BaseTest {
         checkOutStep.moveToCheckOutPage();
         checkOutStep.moveToCheckOverviewOutPageAndFinishCheckOut();
 
-        Assert.assertEquals(new CheckOutCompletePage(driver,true).getCompleteTextBy().getText(), "Your order has been dispatched, and will arrive just as fast as the pony can get there!");
+        Assert.assertEquals(new CheckOutCompletePage(driver,true).completeText.getText(), "Your order has been dispatched, and will arrive just as fast as the pony can get there!");
     }
 }
 

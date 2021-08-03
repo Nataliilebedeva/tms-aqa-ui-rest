@@ -1,27 +1,24 @@
 package pages;
 
 import baseEntities.BasePage;
-import org.openqa.selenium.By;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.FindBy;
 
 public class LoginPage extends BasePage {
-    //1. Селекторы
 
-    private final static By username_Input_By = By.id("user-name");
-    private final static By password_Input_By = By.id("password");
-    private final static By login_Button_By = By.id("login-button");
-    private final static By error_Label_By = By.tagName("h3");
+    @FindBy(id = "user-name")
+    public WebElement usernameInput;
 
-    //3. Getter
+    @FindBy(id = "password")
+    public WebElement passwordInput;
 
-    public WebElement getUsernameInput() { return driver.findElement(username_Input_By);}
-    public WebElement getPasswordInput() { return driver.findElement(password_Input_By);}
-    public WebElement getLoginButton() { return driver.findElement(login_Button_By);}
-    public WebElement getErrorLabel() { return driver.findElement(error_Label_By);}
+    @FindBy(id = "login-button")
+    public WebElement loginButton;
 
-//Конструктор
+    @FindBy(tagName = "h3")
+    public WebElement errorLabel;
 
     public LoginPage(WebDriver driver, boolean openPageByURL) {
         super(driver, openPageByURL);
@@ -35,29 +32,22 @@ public class LoginPage extends BasePage {
     @Override
     public boolean isPageOpened() {
         try {
-            return getLoginButton().isDisplayed();
+            return loginButton.isDisplayed();
         } catch (NoSuchElementException ex) {
             return false;
         }
     }
 
-
-    //4. Атомарные методы по работе с элементом
-
-    //метод по вводу значений в поле логин,пароль
-    //на входе получаем стринговое значение
     public void setUsername(String text) {
-        getUsernameInput().sendKeys(text);
+        usernameInput.sendKeys(text);
     }
 
     public void setPassword(String text) {
-        getPasswordInput().sendKeys(text);
+        passwordInput.sendKeys(text);
     }
 
     public void clickLoginButton() {
-        getLoginButton().click();
+        loginButton.click();
     }
-
-
 }
 

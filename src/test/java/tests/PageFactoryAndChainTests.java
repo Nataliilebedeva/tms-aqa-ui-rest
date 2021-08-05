@@ -2,6 +2,7 @@ package tests;
 
 import baseEntities.BaseTest;
 import io.qameta.allure.*;
+import models.User;
 import org.openqa.selenium.TimeoutException;
 import org.testng.Assert;
 import org.testng.annotations.Test;
@@ -10,7 +11,9 @@ import steps.AddtoCartStep;
 import steps.CheckOutStep;
 import steps.LoginStep;
 
-public class SmokeTest extends BaseTest {
+import javax.jws.soap.SOAPBinding;
+
+public class PageFactoryAndChainTests extends BaseTest {
 
     //___________________________________________Логирование________________________________________________
     //1. Проверка на вход в систему стандарный пользователь
@@ -120,7 +123,7 @@ public class SmokeTest extends BaseTest {
                 .addOrDeleteProduct("Sauce Labs Fleece Jacket",true)
                 .clickCartButton()
                 .clickCheckOutButton()
-                .sendAttributeForCheckOut()
+                .sendAttributeForCheckOut("Nat","Leb","1234")
                 .clickContinueButton()
                 .clickButtonFinish();
 

@@ -1,6 +1,7 @@
 package pages;
 
 import baseEntities.BasePage;
+import models.User;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -55,10 +56,10 @@ public class YourInformationCheckOut extends BasePage {
         zipCodeInput.sendKeys(text);
     }
 
-    public YourInformationCheckOut sendAttributeForCheckOut() {
-        setUserFirstName("Nat");
-        setUserLastName("Leb");
-        setZipCode("1234");
+    public YourInformationCheckOut sendAttributeForCheckOut(String firstName, String lastName, String zipPostalCode) {
+        setUserFirstName(firstName);
+        setUserLastName(lastName);
+        setZipCode(zipPostalCode);
         return new YourInformationCheckOut(driver, false);
     }
 

@@ -46,8 +46,24 @@ public class LoginPage extends BasePage {
         passwordInput.sendKeys(text);
     }
 
+
     public void clickLoginButton() {
         loginButton.click();
+    }
+
+    public ProductsPage loginWithCorrectAttribute(String username, String password) {
+        setUsername(username);
+        setPassword(password);
+        clickLoginButton();
+        return new ProductsPage(driver, true);
+    }
+
+    public LoginPage loginWithIncorrectAttribute() throws InterruptedException {
+        setUsername("11111");
+        setPassword("22222");
+        clickLoginButton();
+        Thread.sleep(1000);
+        return new LoginPage(driver,false);
     }
 }
 

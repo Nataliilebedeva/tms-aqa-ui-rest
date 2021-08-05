@@ -34,8 +34,9 @@ public class CheckOutOverviewPage extends BasePage {
         }
     }
 
-    public void setButtonFinish() {
+    public CheckOutCompletePage clickButtonFinish() {
         buttonFinish.click();
+        return new CheckOutCompletePage(driver,false);
     }
 
 

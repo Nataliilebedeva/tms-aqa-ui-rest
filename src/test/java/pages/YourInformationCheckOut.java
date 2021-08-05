@@ -43,10 +43,27 @@ public class YourInformationCheckOut extends BasePage {
         }
     }
 
-    public void setUserFirstName (String text) { firsNameInput.sendKeys(text);}
-    public void setUserLastName (String text) { lastNameInput.sendKeys(text);}
-    public void setZipCode (String text) { zipCodeInput.sendKeys(text);}
-    public void clickContinueButton () { continueButton.click();}
+    public void setUserFirstName(String text) {
+        firsNameInput.sendKeys(text);
+    }
 
+    public void setUserLastName(String text) {
+        lastNameInput.sendKeys(text);
+    }
 
+    public void setZipCode(String text) {
+        zipCodeInput.sendKeys(text);
+    }
+
+    public YourInformationCheckOut sendAttributeForCheckOut() {
+        setUserFirstName("Nat");
+        setUserLastName("Leb");
+        setZipCode("1234");
+        return new YourInformationCheckOut(driver, false);
+    }
+
+    public CheckOutOverviewPage clickContinueButton() {
+        continueButton.click();
+        return new CheckOutOverviewPage(driver, false);
+    }
 }

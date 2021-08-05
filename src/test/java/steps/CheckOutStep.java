@@ -13,10 +13,11 @@ public class CheckOutStep extends BaseStep {
     }
 
     @Step("Переход на страницу карзины You Cart")
-    public void moveToYouCartPage () {
+    public YourCartPage moveToYouCartPage () {
         ProductsPage productsPage = new ProductsPage(driver, true);
         // productsPage.addToCart(productName);
         productsPage.clickCartButton();
+        return new YourCartPage(driver,true);
     }
 
     @Step("Переход на страницу Check Out и заполнение резквизитов для оплаты")
@@ -36,7 +37,7 @@ public class CheckOutStep extends BaseStep {
         YourInformationCheckOut yourInformationCheckOut = new YourInformationCheckOut(driver, false);
         yourInformationCheckOut.clickContinueButton();
         CheckOutOverviewPage checkOutOverviewPage = new CheckOutOverviewPage(driver, false);
-        checkOutOverviewPage.setButtonFinish();
+        checkOutOverviewPage.clickButtonFinish();
 
     }
 

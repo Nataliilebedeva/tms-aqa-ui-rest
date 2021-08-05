@@ -12,14 +12,14 @@ import java.util.List;
 
 public class ProductsPage extends BasePage {
 
-    private WebElement webElement;
+    // private WebElement webElement;
     private final static String endpoint = "inventory.html";
 
     @FindBy(className = "title")
     public WebElement titleLabel;
 
     @FindBy(className = "shopping_cart_badge")
-    public static WebElement labelCart;
+    public WebElement labelCart;
 
     @FindBy(className = "shopping_cart_link")
     public static WebElement cartButton;
@@ -52,25 +52,26 @@ public class ProductsPage extends BasePage {
         return titleLabel.getText();
     }
 
-    public WebElement returnWebElement (String productName) {
+    public WebElement returnWebElement(String productName) {
         boolean isFound = false;
         for (WebElement element : products) {
             String textValue = element.getText();
             if (textValue.equalsIgnoreCase(productName)) {
-                this.webElement = element;
+                // this.webElement = element;
                 isFound = true;
-                break;
+                return element;
             }
         }
         if (!isFound) {
             throw new NoSuchElementException("Опции с таким текстом нет");
         }
-        return webElement;
+        return null;
     }
 
     //нажатие на название продукта и переход на описание продукта
-    public void addToCartBySomeProductPage(String productName) {
+    public SomeProductPage addToCartBySomeProductPage(String productName) {
         returnWebElement(productName).click();
+        return new SomeProductPage(driver,false);
     }
 
     //нажатие на кнопку add to cart и добавление в карзину
@@ -78,7 +79,21 @@ public class ProductsPage extends BasePage {
         returnWebElement(productName).findElement(By.xpath("./ancestor::div[@class = 'inventory_item_description']//button")).click();
     }
 
-    public void clickCartButton() {
-        cartButton.click();
+    public ProductsPage addOrDeleteProduct(String productName, Boolean addOrDelete) {
+        if (addOrDelete == true) {
+            addToCart(productName);
+        } else {
+            for (int i = 0; i < 2; i++) {
+                addToCart(productName);
+            }
+        }
+        return new ProductsPage(driver,false);
     }
+
+    public YourCartPage clickCartButton() {
+        cartButton.click();
+        return new YourCartPage(driver, true);
+    }
+
+
 }

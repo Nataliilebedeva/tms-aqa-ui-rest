@@ -37,7 +37,8 @@ public class SomeProductPage extends BasePage {
         }
     }
 
-    public void clickAddToCartButton() {
+    public SomeProductPage clickAddToCartButton() {
         addToCartButton.click();
+        return new SomeProductPage(driver,false);
     }
 }

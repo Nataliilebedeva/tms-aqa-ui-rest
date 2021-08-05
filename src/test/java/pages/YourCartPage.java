@@ -34,7 +34,8 @@ public class YourCartPage extends BasePage {
         }
     }
 
-    public void clickCheckOutButton() {
+    public YourInformationCheckOut clickCheckOutButton() {
         checkoutButton.click();
+        return new YourInformationCheckOut(driver,false);
     }
 }

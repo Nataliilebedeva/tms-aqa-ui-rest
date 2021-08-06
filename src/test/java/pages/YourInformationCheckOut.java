@@ -1,7 +1,7 @@
 package pages;
 
 import baseEntities.BasePage;
-import models.User;
+import models.CustomerBuilder;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -60,6 +60,14 @@ public class YourInformationCheckOut extends BasePage {
         setUserFirstName(firstName);
         setUserLastName(lastName);
         setZipCode(zipPostalCode);
+        return new YourInformationCheckOut(driver, false);
+    }
+
+    //дублирующий метод создавала просто для проверки работы билдера
+    public YourInformationCheckOut sendAttributeForCheckOutForBuilder(CustomerBuilder customerBuilder) {
+        setUserFirstName(customerBuilder.getFirstName());
+        setUserLastName(customerBuilder.getLastName());
+        setZipCode(customerBuilder.getZipPostalCode());
         return new YourInformationCheckOut(driver, false);
     }
 

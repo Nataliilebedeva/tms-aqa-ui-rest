@@ -1,6 +1,8 @@
 package pages;
 
 import baseEntities.BasePage;
+import models.CustomerBuilder;
+import models.UserBuilder;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -64,6 +66,14 @@ public class LoginPage extends BasePage {
         clickLoginButton();
         Thread.sleep(1000);
         return new LoginPage(driver,false);
+    }
+
+    //дублирующий метод создавала просто для проверки работы билдера
+    public ProductsPage loginWithCorrectAttributeForBuilder(UserBuilder userBuilder) {
+        setUsername(userBuilder.getLogin());
+        setPassword(userBuilder.getPassword());
+        clickLoginButton();
+        return new ProductsPage(driver, true);
     }
 }
 

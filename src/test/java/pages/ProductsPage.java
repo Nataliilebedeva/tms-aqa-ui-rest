@@ -79,6 +79,12 @@ public class ProductsPage extends BasePage {
         returnWebElement(productName).findElement(By.xpath("./ancestor::div[@class = 'inventory_item_description']//button")).click();
     }
 
+    /***
+     *
+     * @param productName
+     * @param addOrDelete: true - добавить, false - удалить
+     * @return
+     */
     public ProductsPage addOrDeleteProduct(String productName, Boolean addOrDelete) {
         if (addOrDelete == true) {
             addToCart(productName);

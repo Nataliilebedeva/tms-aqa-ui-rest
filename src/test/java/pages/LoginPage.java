@@ -3,6 +3,7 @@ package pages;
 import baseEntities.BasePage;
 import models.CustomerBuilder;
 import models.UserBuilder;
+import models.modelsForLombok.UserLogin;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -75,5 +76,14 @@ public class LoginPage extends BasePage {
         clickLoginButton();
         return new ProductsPage(driver, true);
     }
+
+    //дублирующий метод создавала просто для ValueObject
+    public ProductsPage loginWithCorrectAttributeForValueObject(UserLogin userLogin) {
+        setUsername(userLogin.getLogin());
+        setPassword(userLogin.getPassword());
+        clickLoginButton();
+        return new ProductsPage(driver, true);
+    }
+
 }
 

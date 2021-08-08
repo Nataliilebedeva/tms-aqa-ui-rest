@@ -2,6 +2,8 @@ package pages;
 
 import baseEntities.BasePage;
 import models.CustomerBuilder;
+import models.modelsForLombok.Customer;
+import models.modelsForLombok.UserLogin;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -68,6 +70,14 @@ public class YourInformationCheckOut extends BasePage {
         setUserFirstName(customerBuilder.getFirstName());
         setUserLastName(customerBuilder.getLastName());
         setZipCode(customerBuilder.getZipPostalCode());
+        return new YourInformationCheckOut(driver, false);
+    }
+
+    //дублирующий метод создавала просто для Value Object
+    public YourInformationCheckOut sendAttributeForCheckOutForBuilderForValueObject(Customer customer) {
+        setUserFirstName(customer.getFirstName());
+        setUserLastName(customer.getLastName());
+        setZipCode(customer.getZipPostalCode());
         return new YourInformationCheckOut(driver, false);
     }
 

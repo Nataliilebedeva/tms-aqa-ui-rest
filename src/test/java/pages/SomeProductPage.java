@@ -38,6 +38,7 @@ public class SomeProductPage extends BasePage {
     }
 
     public SomeProductPage clickAddToCartButton() {
+        logger.debug("Нажатие на кнопки ADD TO CARD со страницы сооветсвующего товара ");
         addToCartButton.click();
         return new SomeProductPage(driver,false);
     }

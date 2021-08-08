@@ -1,7 +1,6 @@
 package pages;
 
 import baseEntities.BasePage;
-import models.CustomerBuilder;
 import models.UserBuilder;
 import models.modelsForLombok.UserLogin;
 import org.openqa.selenium.NoSuchElementException;
@@ -49,23 +48,28 @@ public class LoginPage extends BasePage {
         passwordInput.sendKeys(text);
     }
 
-
     public void clickLoginButton() {
         loginButton.click();
     }
 
     public ProductsPage loginWithCorrectAttribute(String username, String password) {
+        logger.info("Выполнение Step(Method) Корректное логирование началось");
+        logger.debug(String.format("Заполнение формы Login параметром %s", username));
         setUsername(username);
+        logger.debug(String.format("Заполнение формы Password параметром %s", password));
         setPassword(password);
+        logger.debug("Нажатие кнопки LOGIN");
         clickLoginButton();
         return new ProductsPage(driver, true);
     }
 
     public LoginPage loginWithIncorrectAttribute() throws InterruptedException {
+        logger.info("Выполнение Step(Method) Некорректное логирование началось...");
+        logger.debug("Заполнение форм на странице Login произвольными (некорректными) параметрами");
         setUsername("11111");
         setPassword("22222");
+        logger.debug("Нажатие кнопки LOGIN");
         clickLoginButton();
-        Thread.sleep(1000);
         return new LoginPage(driver,false);
     }
 

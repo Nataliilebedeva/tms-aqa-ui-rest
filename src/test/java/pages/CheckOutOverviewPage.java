@@ -35,8 +35,9 @@ public class CheckOutOverviewPage extends BasePage {
     }
 
     public CheckOutCompletePage clickButtonFinish() {
+        logger.debug("Нажатие на кнопку FINISH");
         buttonFinish.click();
-        return new CheckOutCompletePage(driver,false);
+        return new CheckOutCompletePage(driver,true);
     }
 
 

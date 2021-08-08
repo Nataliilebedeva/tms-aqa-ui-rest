@@ -59,8 +59,12 @@ public class YourInformationCheckOut extends BasePage {
     }
 
     public YourInformationCheckOut sendAttributeForCheckOut(String firstName, String lastName, String zipPostalCode) {
+        logger.info("Выполнение Step(Method) Заполнение полей для оплаты началось...");
+        logger.debug("Заполнение поля First name");
         setUserFirstName(firstName);
+        logger.debug("Заполнение поля Last name");
         setUserLastName(lastName);
+        logger.debug("Заполнение поля Zip code");
         setZipCode(zipPostalCode);
         return new YourInformationCheckOut(driver, false);
     }
@@ -82,7 +86,8 @@ public class YourInformationCheckOut extends BasePage {
     }
 
     public CheckOutOverviewPage clickContinueButton() {
+        logger.debug("Нажатие на кнопку CONTINUE");
         continueButton.click();
-        return new CheckOutOverviewPage(driver, false);
+        return new CheckOutOverviewPage(driver, true);
     }
 }

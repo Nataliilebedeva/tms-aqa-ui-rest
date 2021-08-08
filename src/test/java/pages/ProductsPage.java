@@ -70,6 +70,7 @@ public class ProductsPage extends BasePage {
 
     //нажатие на название продукта и переход на описание продукта
     public SomeProductPage addToCartBySomeProductPage(String productName) {
+        logger.debug(String.format("Нажатие на название продукта %s",productName));
         returnWebElement(productName).click();
         return new SomeProductPage(driver,false);
     }
@@ -86,17 +87,22 @@ public class ProductsPage extends BasePage {
      * @return
      */
     public ProductsPage addOrDeleteProduct(String productName, Boolean addOrDelete) {
+        logger.info("Выполнение Step(Method) Добавление/Удаление товара в/из карзины началось...");
         if (addOrDelete == true) {
+            logger.debug(String.format("Нажатие кнопки ADD TO CART товара %s",productName));
             addToCart(productName);
         } else {
+            logger.debug(String.format("Нажатие кнопки ADD TO CART товара %s", productName));
             for (int i = 0; i < 2; i++) {
                 addToCart(productName);
             }
+            logger.debug(String.format("Нажатие кнопки REMOVE товара %s", productName));
         }
         return new ProductsPage(driver,false);
     }
 
     public YourCartPage clickCartButton() {
+        logger.debug("Нажатие на кнопки SHOPPING CART");
         cartButton.click();
         return new YourCartPage(driver, true);
     }

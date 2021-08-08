@@ -35,7 +35,8 @@ public class YourCartPage extends BasePage {
     }
 
     public YourInformationCheckOut clickCheckOutButton() {
+        logger.debug("Нажатие на кнопки CHECKOUT");
         checkoutButton.click();
-        return new YourInformationCheckOut(driver,false);
+        return new YourInformationCheckOut(driver,true);
     }
 }

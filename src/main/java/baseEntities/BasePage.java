@@ -1,6 +1,8 @@
 package baseEntities;
 
 import core.ReadProperties;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.PageFactory;
 
@@ -9,6 +11,7 @@ public abstract class BasePage {
 
     protected WebDriver driver;
     protected ReadProperties properties;
+    protected  final Logger logger = LogManager.getLogger(this);
 
     protected abstract void openPage();
 
@@ -22,9 +25,11 @@ public abstract class BasePage {
 
         if (openPageByURL) {
             openPage();
+            logger.debug("Страница " + this.getClass() + " успешно открылась");
         }
 
         waitForOpen();
+
     }
 
     protected void waitForOpen() {
@@ -40,7 +45,6 @@ public abstract class BasePage {
             secondsCount++;
             isPageOpenedIndicator = isPageOpened();
         }
-        //цикл закончится по двум присинам: либо время вышло, либо страница открылась
 
         if (!isPageOpenedIndicator) {
             throw new AssertionError("Page was not opened");

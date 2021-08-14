@@ -2,16 +2,11 @@ package tests;
 
 import baseEntities.BaseTest;
 import io.qameta.allure.*;
-import models.User;
 import org.openqa.selenium.TimeoutException;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import pages.*;
-import steps.AddtoCartStep;
-import steps.CheckOutStep;
 import steps.LoginStep;
-
-import javax.jws.soap.SOAPBinding;
 
 public class PageFactoryAndChainTests extends BaseTest {
 

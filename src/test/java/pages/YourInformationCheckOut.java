@@ -1,9 +1,8 @@
 package pages;
 
 import baseEntities.BasePage;
-import models.CustomerBuilder;
+import models.sauseDemo.CustomerBuilder;
 import models.modelsForLombok.Customer;
-import models.modelsForLombok.UserLogin;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;

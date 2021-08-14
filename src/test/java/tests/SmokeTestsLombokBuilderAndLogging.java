@@ -1,10 +1,7 @@
 package tests;
 
 import baseEntities.BaseTest;
-import models.UserBuilder;
-import models.modelsForLombok.Customer;
 import models.modelsForLombok.CustomerBuilder;
-import models.modelsForLombok.UserLogin;
 import models.modelsForLombok.UserLoginBuilder;
 import org.openqa.selenium.TimeoutException;
 import org.testng.Assert;

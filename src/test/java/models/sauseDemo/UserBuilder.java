@@ -1,4 +1,4 @@
-package models;
+package models.sauseDemo;
 public class UserBuilder {
 
     String login;

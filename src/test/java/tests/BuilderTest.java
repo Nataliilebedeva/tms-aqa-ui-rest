@@ -1,13 +1,12 @@
 package tests;
 
 import baseEntities.BaseTest;
-import models.CustomerBuilder;
-import models.UserBuilder;
+import models.sauseDemo.CustomerBuilder;
+import models.sauseDemo.UserBuilder;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import pages.CheckOutCompletePage;
 import pages.LoginPage;
-import steps.LoginStep;
 
 public class BuilderTest extends BaseTest {
 

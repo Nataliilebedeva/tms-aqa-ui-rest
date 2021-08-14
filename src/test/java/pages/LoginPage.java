@@ -1,7 +1,7 @@
 package pages;
 
 import baseEntities.BasePage;
-import models.UserBuilder;
+import models.sauseDemo.UserBuilder;
 import models.modelsForLombok.UserLogin;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;

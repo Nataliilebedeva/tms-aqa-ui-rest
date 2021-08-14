@@ -1,7 +1,7 @@
 package tests;
 
 import baseEntities.BaseTest;
-import models.User;
+import models.sauseDemo.UserSauseDemo;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import pages.CheckOutCompletePage;
@@ -11,27 +11,27 @@ public class ValueObjectTest extends BaseTest {
 
     @Test(description = "Позитивный тест оплату")
     public void positiveChekOut() {
-        User user = setupUser();
+        UserSauseDemo userSauseDemo = setupUser();
         CheckOutCompletePage checkOutCompletePage = new LoginStep(driver)
-                .loginWithCorrectAttribute(user.getLogin(), user.getPassword())
-                .addOrDeleteProduct(user.getProductName(), true)
+                .loginWithCorrectAttribute(userSauseDemo.getLogin(), userSauseDemo.getPassword())
+                .addOrDeleteProduct(userSauseDemo.getProductName(), true)
                 .clickCartButton()
                 .clickCheckOutButton()
-                .sendAttributeForCheckOut(user.getFirstName(), user.getLastName(), user.getZipPostalCode())
+                .sendAttributeForCheckOut(userSauseDemo.getFirstName(), userSauseDemo.getLastName(), userSauseDemo.getZipPostalCode())
                 .clickContinueButton()
                 .clickButtonFinish();
 
         Assert.assertEquals(checkOutCompletePage.completeText.getText(), "Your order has been dispatched, and will arrive just as fast as the pony can get there!");
     }
 
-    private User setupUser() {
-        User user = new User();
-        user.setLogin("standard_user");
-        user.setPassword("secret_sauce");
-        user.setProductName("Sauce Labs Fleece Jacket");
-        user.setFirstName("Natali");
-        user.setLastName("Leb");
-        user.setZipPostalCode("11111");
-        return user;
+    private UserSauseDemo setupUser() {
+        UserSauseDemo userSauseDemo = new UserSauseDemo();
+        userSauseDemo.setLogin("standard_user");
+        userSauseDemo.setPassword("secret_sauce");
+        userSauseDemo.setProductName("Sauce Labs Fleece Jacket");
+        userSauseDemo.setFirstName("Natali");
+        userSauseDemo.setLastName("Leb");
+        userSauseDemo.setZipPostalCode("11111");
+        return userSauseDemo;
     }
 }

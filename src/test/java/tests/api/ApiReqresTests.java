@@ -1,6 +1,6 @@
 package tests.api;
 
-import io.restassured.RestAssured;
+import baseEntities.BaseReqresTest;
 import io.restassured.http.Method;
 import io.restassured.response.Response;
 import io.restassured.specification.RequestSpecification;
@@ -9,198 +9,222 @@ import org.testng.Assert;
 import org.testng.annotations.Test;
 
 import static io.restassured.RestAssured.given;
+import static org.hamcrest.Matchers.is;
 
-public class ApiReqresTests {
+public class ApiReqresTests extends BaseReqresTest {
 
     @Test
-    public void test1(){
+    public void test1() {
         String endpoint = "/api/users?page=2";
-        RestAssured.baseURI = "https://reqres.in";
         //Given
         RequestSpecification httpRequest = given();
         //When
-        Response response = httpRequest.request(Method.GET,endpoint);
+        Response response = httpRequest.request(Method.GET, endpoint);
         //Then
         String responseBody = response.getBody().asString();
         System.out.println(responseBody);
         int statusCode = response.getStatusCode();
-        Assert.assertEquals(statusCode,200);
+        Assert.assertEquals(statusCode, 200);
     }
 
     @Test
-    public void test2(){
+    public void test2() {
+        String endpoint = "/api/users?page=2";
         given()
                 .when()
-                .get("https://reqres.in/api/users?page=2")
-                .then()
-                .log().body()
-                .statusCode(HttpStatus.SC_OK);
-
-    }
-
-    @Test
-    public void getSingleUserTest(){
-        given()
-                .when()
-                .get("https://reqres.in/api/users/2")
+                .get(endpoint)
                 .then()
                 .log().body()
                 .statusCode(HttpStatus.SC_OK);
     }
 
     @Test
-    public void getSingleUserNotFoundTest(){
+    public void getSingleUserTest() {
+        String endpoint = "/api/users/2";
         given()
                 .when()
-                .get("https://reqres.in/api/users/23")
+                .get(endpoint)
+                .then()
+                .log().body()
+                .statusCode(HttpStatus.SC_OK);
+    }
+
+    @Test
+    public void getSingleUserNotFoundTest() {
+        String endpoint = "/api/users/23";
+        given()
+                .when()
+                .get(endpoint)
                 .then()
                 .log().body()
                 .statusCode(HttpStatus.SC_NOT_FOUND);
     }
 
     @Test
-    public void getListResourceTest(){
+    public void getListResourceTest() {
+        String endpoint = "/api/unknown";
         given()
                 .when()
-                .get("https://reqres.in/api/unknown")
+                .get(endpoint)
                 .then()
                 .log().body()
                 .statusCode(HttpStatus.SC_OK);
     }
 
     @Test
-    public void getSingleResourceTest(){
+    public void getSingleResourceTest() {
+        String endpoint = "/api/unknown/2";
         given()
                 .when()
-                .get("https://reqres.in/api/unknown/2")
+                .get(endpoint)
                 .then()
                 .log().body()
                 .statusCode(HttpStatus.SC_OK);
     }
 
     @Test
-    public void getSingleResourceNotFoundTest(){
+    public void getSingleResourceNotFoundTest() {
+        String endpoint = "/api/unknown/23";
         given()
                 .when()
-                .get("https://reqres.in/api/unknown/23")
+                .get(endpoint)
                 .then()
                 .log().body()
                 .statusCode(HttpStatus.SC_NOT_FOUND);
     }
 
+    //?
     @Test
-    public void postCreateTest(){
+    public void postCreateTest() {
+        String endpoint = "/api/users";
         given()
                 .body("{\n" +
                         "    \"name\": \"morpheus\",\n" +
                         "    \"job\": \"leader\"\n" +
                         "}")
                 .when()
-                .post("https://reqres.in/api/users")
+                .post(endpoint)
                 .then()
                 .log().body()
+                .body("name", is("morpheus"))
+                .body("job", is("leader"))
                 .statusCode(HttpStatus.SC_CREATED);
     }
 
     @Test
-    public void putUpdateTest(){
+    public void putUpdateTest() {
+        String endpoint = "/api/users/2";
         given()
                 .body("{\n" +
                         "    \"name\": \"morpheus\",\n" +
                         "    \"job\": \"zion resident\"\n" +
                         "}")
                 .when()
-                .put("https://reqres.in/api/users/2")
+                .put(endpoint)
                 .then()
                 .log().body()
+                .body("name", is("morpheus"))
+                .body("job", is("zion resident"))
                 .statusCode(HttpStatus.SC_OK);
     }
 
     @Test
-    public void patchUpdateTest(){
+    public void patchUpdateTest() {
+        String endpoint = "/api/users/2";
         given()
                 .body("{\n" +
                         "    \"name\": \"morpheus\",\n" +
                         "    \"job\": \"zion resident\"\n" +
                         "}")
                 .when()
-                .patch("https://reqres.in/api/users/2")
+                .patch(endpoint)
                 .then()
                 .log().body()
+                .body("name", is("morpheus"))
+                .body("job", is("zion resident"))
                 .statusCode(HttpStatus.SC_OK);
     }
 
     @Test
-    public void deleteTest(){
+    public void deleteTest() {
+        String endpoint = "/api/users/2";
         given()
                 .when()
-                .delete("https://reqres.in/api/users/2")
+                .delete(endpoint)
                 .then()
                 .log().body()
                 .statusCode(HttpStatus.SC_NO_CONTENT);
     }
 
-    //???
     @Test
-    public void postRegisterSuccessfulTest(){
+    public void postRegisterSuccessfulTest() {
+        String endpoint = "/api/register";
         given()
                 .body("{\n" +
                         "    \"email\": \"eve.holt@reqres.in\",\n" +
                         "    \"password\": \"pistol\"\n" +
                         "}")
                 .when()
-                .post("https://reqres.in/api/register")
+                .post(endpoint)
                 .then()
                 .log().body()
+                .body("id", is(4))
+                .body("token", is("QpwL5tke4Pnpja7X4"))
                 .statusCode(HttpStatus.SC_OK);
     }
 
     @Test
-    public void postRegisterUnSuccessfulTest(){
+    public void postRegisterUnSuccessfulTest() {
+        String endpoint = "/api/register";
         given()
                 .body("{\n" +
                         "    \"email\": \"sydney@fife\"\n" +
                         "}")
                 .when()
-                .post("https://reqres.in/api/register")
+                .post(endpoint)
                 .then()
                 .log().body()
+                .body("error", is("Missing password"))
                 .statusCode(HttpStatus.SC_BAD_REQUEST);
     }
 
-    //??
     @Test
-    public void postLoginSuccessfulTest(){
+    public void postLoginSuccessfulTest() {
+        String endpoint = "/api/login";
         given()
                 .body("{\n" +
                         "    \"email\": \"eve.holt@reqres.in\",\n" +
                         "    \"password\": \"cityslicka\"\n" +
                         "}")
                 .when()
-                .post("https://reqres.in/api/login")
+                .post(endpoint)
                 .then()
                 .log().body()
+                .body("token", is("QpwL5tke4Pnpja7X4"))
                 .statusCode(HttpStatus.SC_OK);
     }
 
     @Test
-    public void postLoginUnSuccessfulTest(){
+    public void postLoginUnSuccessfulTest() {
+        String endpoint = "/api/login";
         given()
                 .body("{\n" +
                         "    \"email\": \"peter@klaven\"\n" +
                         "}")
                 .when()
-                .post("https://reqres.in/api/login")
+                .post(endpoint)
                 .then()
                 .log().body()
+                .body("error", is("Missing password"))
                 .statusCode(HttpStatus.SC_BAD_REQUEST);
     }
 
     @Test
-    public void getDelayedResponseTest(){
+    public void getDelayedResponseTest() {
+        String endpoint = "/api/users?delay=3";
         given()
                 .when()
-                .get("https://reqres.in/api/users?delay=3")
+                .get(endpoint)
                 .then()
                 .log().body()
                 .statusCode(HttpStatus.SC_OK);

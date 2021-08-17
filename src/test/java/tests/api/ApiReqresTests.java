@@ -14,21 +14,7 @@ import static org.hamcrest.Matchers.is;
 public class ApiReqresTests extends BaseReqresTest {
 
     @Test
-    public void test1() {
-        String endpoint = "/api/users?page=2";
-        //Given
-        RequestSpecification httpRequest = given();
-        //When
-        Response response = httpRequest.request(Method.GET, endpoint);
-        //Then
-        String responseBody = response.getBody().asString();
-        System.out.println(responseBody);
-        int statusCode = response.getStatusCode();
-        Assert.assertEquals(statusCode, 200);
-    }
-
-    @Test
-    public void test2() {
+    public void listUsersTest() {
         String endpoint = "/api/users?page=2";
         given()
                 .when()
@@ -93,7 +79,6 @@ public class ApiReqresTests extends BaseReqresTest {
                 .statusCode(HttpStatus.SC_NOT_FOUND);
     }
 
-    //?
     @Test
     public void postCreateTest() {
         String endpoint = "/api/users";

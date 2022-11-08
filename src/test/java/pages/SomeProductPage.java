@@ -1,23 +1,27 @@
 package pages;
 
 import baseEntities.BasePage;
-import org.openqa.selenium.By;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.FindBy;
 
 public class SomeProductPage extends BasePage {
 
     private final static String endpoint = "inventory-item.html?id=2";
 
-    private final static By title_text_By = By.id("back-to-products");
-    private final static By add_to_cart_button = By.xpath("//*[text() = 'Add to cart']");
-    private final static By label_cart = By.className("shopping_cart_badge");
+    @FindBy(id = "back-to-products")
+    public WebElement titleText;
+
+    @FindBy(xpath = "//*[text() = 'Add to cart']")
+    public WebElement addToCartButton;
+
+    @FindBy(className = "shopping_cart_badge")
+    public WebElement labelCart;
 
     public SomeProductPage(WebDriver driver, boolean openPageByURL) {
         super(driver, openPageByURL);
     }
-
 
     @Override
     protected void openPage() {
@@ -27,17 +31,15 @@ public class SomeProductPage extends BasePage {
     @Override
     public boolean isPageOpened() {
         try {
-            return getTitleText().isDisplayed();
+            return titleText.isDisplayed();
         } catch (NoSuchElementException ex) {
             return false;
         }
     }
 
-
-    public WebElement getTitleText() { return driver.findElement(title_text_By);}
-    public WebElement getAddToCartButton() { return driver.findElement(add_to_cart_button);}
-    public WebElement getLabelCartNull() { return driver.findElement(label_cart);}
-
-
-    public void clickAddToCartButton() { getAddToCartButton().click(); }
+    public SomeProductPage clickAddToCartButton() {
+        logger.debug("Нажатие на кнопки ADD TO CARD со страницы сооветсвующего товара ");
+        addToCartButton.click();
+        return new SomeProductPage(driver,false);
+    }
 }

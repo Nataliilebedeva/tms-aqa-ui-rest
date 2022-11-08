@@ -1,27 +1,26 @@
 package pages;
 
 import baseEntities.BasePage;
-import org.openqa.selenium.By;
+import models.UserBuilder;
+import models.modelsForLombok.UserLogin;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.FindBy;
 
 public class LoginPage extends BasePage {
-    //1. Селекторы
 
-    private final static By username_Input_By = By.id("user-name");
-    private final static By password_Input_By = By.id("password");
-    private final static By login_Button_By = By.id("login-button");
-    private final static By error_Label_By = By.tagName("h3");
+    @FindBy(id = "user-name")
+    public WebElement usernameInput;
 
-    //3. Getter
+    @FindBy(id = "password")
+    public WebElement passwordInput;
 
-    public WebElement getUsernameInput() { return driver.findElement(username_Input_By);}
-    public WebElement getPasswordInput() { return driver.findElement(password_Input_By);}
-    public WebElement getLoginButton() { return driver.findElement(login_Button_By);}
-    public WebElement getErrorLabel() { return driver.findElement(error_Label_By);}
+    @FindBy(id = "login-button")
+    public WebElement loginButton;
 
-//Конструктор
+    @FindBy(tagName = "h3")
+    public WebElement errorLabel;
 
     public LoginPage(WebDriver driver, boolean openPageByURL) {
         super(driver, openPageByURL);
@@ -35,29 +34,60 @@ public class LoginPage extends BasePage {
     @Override
     public boolean isPageOpened() {
         try {
-            return getLoginButton().isDisplayed();
+            return loginButton.isDisplayed();
         } catch (NoSuchElementException ex) {
             return false;
         }
     }
 
-
-    //4. Атомарные методы по работе с элементом
-
-    //метод по вводу значений в поле логин,пароль
-    //на входе получаем стринговое значение
     public void setUsername(String text) {
-        getUsernameInput().sendKeys(text);
+        usernameInput.sendKeys(text);
     }
 
     public void setPassword(String text) {
-        getPasswordInput().sendKeys(text);
+        passwordInput.sendKeys(text);
     }
 
     public void clickLoginButton() {
-        getLoginButton().click();
+        loginButton.click();
     }
 
+    public ProductsPage loginWithCorrectAttribute(String username, String password) {
+        logger.info("Выполнение Step(Method) Корректное логирование началось");
+        logger.debug(String.format("Заполнение формы Login параметром %s", username));
+        setUsername(username);
+        logger.debug(String.format("Заполнение формы Password параметром %s", password));
+        setPassword(password);
+        logger.debug("Нажатие кнопки LOGIN");
+        clickLoginButton();
+        return new ProductsPage(driver, true);
+    }
+
+    public LoginPage loginWithIncorrectAttribute() throws InterruptedException {
+        logger.info("Выполнение Step(Method) Некорректное логирование началось...");
+        logger.debug("Заполнение форм на странице Login произвольными (некорректными) параметрами");
+        setUsername("11111");
+        setPassword("22222");
+        logger.debug("Нажатие кнопки LOGIN");
+        clickLoginButton();
+        return new LoginPage(driver,false);
+    }
+
+    //дублирующий метод создавала просто для проверки работы билдера
+    public ProductsPage loginWithCorrectAttributeForBuilder(UserBuilder userBuilder) {
+        setUsername(userBuilder.getLogin());
+        setPassword(userBuilder.getPassword());
+        clickLoginButton();
+        return new ProductsPage(driver, true);
+    }
+
+    //дублирующий метод создавала просто для ValueObject
+    public ProductsPage loginWithCorrectAttributeForValueObject(UserLogin userLogin) {
+        setUsername(userLogin.getLogin());
+        setPassword(userLogin.getPassword());
+        clickLoginButton();
+        return new ProductsPage(driver, true);
+    }
 
 }
 

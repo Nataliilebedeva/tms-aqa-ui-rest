@@ -1,27 +1,36 @@
 package pages;
 
 import baseEntities.BasePage;
-import org.openqa.selenium.By;
+import models.CustomerBuilder;
+import models.modelsForLombok.Customer;
+import models.modelsForLombok.UserLogin;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.FindBy;
 
 public class YourInformationCheckOut extends BasePage {
 
     private final static String endpoint = "checkout-step-one.html";
 
-    //Селекторы
-    private final static By title_button_By = By.id("cancel");
-    private final static By firs_name_Input_By = By.id("first-name");
-    private final static By last_name_Input_By = By.id("last-name");
-    private final static By zip_code_Input_By = By.id("postal-code");
-    private final static By continue_Button_By = By.id("continue");
+    @FindBy(id = "cancel")
+    public WebElement titleButton;
 
+    @FindBy(id = "first-name")
+    public WebElement firsNameInput;
+
+    @FindBy(id = "last-name")
+    public WebElement lastNameInput;
+
+    @FindBy(id = "postal-code")
+    public WebElement zipCodeInput;
+
+    @FindBy(id = "continue")
+    public WebElement continueButton;
 
     public YourInformationCheckOut(WebDriver driver, boolean openPageByURL) {
         super(driver, openPageByURL);
     }
-
 
     @Override
     protected void openPage() {
@@ -31,29 +40,54 @@ public class YourInformationCheckOut extends BasePage {
     @Override
     public boolean isPageOpened() {
         try {
-            return getTitleButtonBy().isDisplayed();
+            return titleButton.isDisplayed();
         } catch (NoSuchElementException ex) {
             return false;
         }
     }
 
-    //Геттеры
-    public WebElement getTitleButtonBy() { return driver.findElement(title_button_By); }
-    public WebElement getFirsName() {
-        return driver.findElement(firs_name_Input_By);
+    public void setUserFirstName(String text) {
+        firsNameInput.sendKeys(text);
     }
-    public WebElement getLastName() {
-        return driver.findElement(last_name_Input_By);
+
+    public void setUserLastName(String text) {
+        lastNameInput.sendKeys(text);
     }
-    public WebElement getZipCode() { return driver.findElement(zip_code_Input_By);}
-    public WebElement getContinueButton() { return driver.findElement(continue_Button_By);}
 
-    //Атомарные методы
+    public void setZipCode(String text) {
+        zipCodeInput.sendKeys(text);
+    }
 
-    public void setUserFirstName (String text) { getFirsName().sendKeys(text);}
-    public void setUserLastName (String text) { getLastName().sendKeys(text);}
-    public void setZipCode (String text) { getZipCode().sendKeys(text);}
-    public void clickContinueButton () { getContinueButton().click();}
+    public YourInformationCheckOut sendAttributeForCheckOut(String firstName, String lastName, String zipPostalCode) {
+        logger.info("Выполнение Step(Method) Заполнение полей для оплаты началось...");
+        logger.debug("Заполнение поля First name");
+        setUserFirstName(firstName);
+        logger.debug("Заполнение поля Last name");
+        setUserLastName(lastName);
+        logger.debug("Заполнение поля Zip code");
+        setZipCode(zipPostalCode);
+        return new YourInformationCheckOut(driver, false);
+    }
 
+    //дублирующий метод создавала просто для проверки работы билдера
+    public YourInformationCheckOut sendAttributeForCheckOutForBuilder(CustomerBuilder customerBuilder) {
+        setUserFirstName(customerBuilder.getFirstName());
+        setUserLastName(customerBuilder.getLastName());
+        setZipCode(customerBuilder.getZipPostalCode());
+        return new YourInformationCheckOut(driver, false);
+    }
 
+    //дублирующий метод создавала просто для Value Object
+    public YourInformationCheckOut sendAttributeForCheckOutForBuilderForValueObject(Customer customer) {
+        setUserFirstName(customer.getFirstName());
+        setUserLastName(customer.getLastName());
+        setZipCode(customer.getZipPostalCode());
+        return new YourInformationCheckOut(driver, false);
+    }
+
+    public CheckOutOverviewPage clickContinueButton() {
+        logger.debug("Нажатие на кнопку CONTINUE");
+        continueButton.click();
+        return new CheckOutOverviewPage(driver, true);
+    }
 }

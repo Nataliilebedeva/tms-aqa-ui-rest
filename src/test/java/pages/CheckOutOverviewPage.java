@@ -1,22 +1,24 @@
 package pages;
 
 import baseEntities.BasePage;
-import org.openqa.selenium.By;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.FindBy;
 
 public class CheckOutOverviewPage extends BasePage {
 
     private final static String endpoint = "checkout-step-two.html";
 
-    private static final By title_button_By = By.id("cancel");
-    private static final By button_finish_By = By.id("finish");
+    @FindBy(id = "cancel")
+    public WebElement titleButton;
+
+    @FindBy(id = "finish")
+    public WebElement buttonFinish;
 
     public CheckOutOverviewPage(WebDriver driver, boolean openPageByURL) {
         super(driver, openPageByURL);
     }
-
 
     @Override
     protected void openPage() {
@@ -26,16 +28,17 @@ public class CheckOutOverviewPage extends BasePage {
     @Override
     public boolean isPageOpened() {
         try {
-            return getTitleButtonBy().isDisplayed();
+            return titleButton.isDisplayed();
         } catch (NoSuchElementException ex) {
             return false;
         }
     }
 
-    public WebElement getTitleButtonBy() { return driver.findElement(title_button_By); }
-    public WebElement getButtonFinish() { return driver.findElement(button_finish_By); }
-
-    public void setButtonFinish() { getButtonFinish().click();}
+    public CheckOutCompletePage clickButtonFinish() {
+        logger.debug("Нажатие на кнопку FINISH");
+        buttonFinish.click();
+        return new CheckOutCompletePage(driver,true);
+    }
 
 
 }

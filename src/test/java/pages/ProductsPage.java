@@ -5,26 +5,34 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.FindBy;
+import org.openqa.selenium.support.FindBys;
+
+import java.util.List;
 
 public class ProductsPage extends BasePage {
 
-    //переменная для ссылки
+    // private WebElement webElement;
     private final static String endpoint = "inventory.html";
 
-    private final static By title_label_By = By.className("title");
-    private final static By label_cart = By.className("shopping_cart_badge");
+    @FindBy(className = "title")
+    public WebElement titleLabel;
 
-    private final static By cart_button = By.className("shopping_cart_link");
+    @FindBy(className = "shopping_cart_badge")
+    public WebElement labelCart;
 
-    private final static String product_addToCart_button = "//*[text() = 'replace']/ancestor::div[@class = 'inventory_item_description']//button";
+    @FindBy(className = "shopping_cart_link")
+    public static WebElement cartButton;
 
-    private final static String some_product_page_button = "//*[text() = 'replace']";
+    @FindBys({
+            @FindBy(className = "inventory_item_name")
+    })
+    public List<WebElement> products;
 
 
     public ProductsPage(WebDriver driver, boolean openPageByURL) {
         super(driver, openPageByURL);
     }
-
 
     @Override
     protected void openPage() {
@@ -34,48 +42,70 @@ public class ProductsPage extends BasePage {
     @Override
     public boolean isPageOpened() {
         try {
-            return getTitleLabel().isDisplayed();
+            return titleLabel.isDisplayed();
         } catch (NoSuchElementException ex) {
             return false;
         }
     }
 
-    //3. Getter
-    public WebElement getTitleLabel() { return driver.findElement(title_label_By);}
-    public String getTitleText() { return getTitleLabel().getText();}
-
-    //геттер для значка на корзине
-    public WebElement getLabelCartNull() { return driver.findElement(label_cart);}
-
-    //геттер для нажатия на кнопку корзина
-    public WebElement getCartButton() { return driver.findElement(cart_button);}
-
-    //геттер для кнопки add to cart
-    public WebElement getProductAddToCartButton (String productName) {
-        return driver.findElement(By.xpath(product_addToCart_button.replace("replace",productName)));
+    public String getTitleText() {
+        return titleLabel.getText();
     }
 
-    //геттер для нажатия на название продукта
-    public WebElement getSomeProductPageButton (String productName) {
-        return driver.findElement(By.xpath(some_product_page_button.replace("replace",productName)));
+    public WebElement returnWebElement(String productName) {
+        boolean isFound = false;
+        for (WebElement element : products) {
+            String textValue = element.getText();
+            if (textValue.equalsIgnoreCase(productName)) {
+                // this.webElement = element;
+                isFound = true;
+                return element;
+            }
+        }
+        if (!isFound) {
+            throw new NoSuchElementException("Опции с таким текстом нет");
+        }
+        return null;
     }
-
-
-    //4 атомарные методы
-
-    //нажатие на кнопку add to cart и добавление в карзину
-    public void addToCart(String productName) { getProductAddToCartButton (productName).click(); }
 
     //нажатие на название продукта и переход на описание продукта
-    public void addToCartBySomeProductPage(String productName) {
-        getSomeProductPageButton(productName).click();
+    public SomeProductPage addToCartBySomeProductPage(String productName) {
+        logger.debug(String.format("Нажатие на название продукта %s",productName));
+        returnWebElement(productName).click();
+        return new SomeProductPage(driver,false);
     }
 
-    public void clickCartButton() {
-        getCartButton().click();
+    //нажатие на кнопку add to cart и добавление в карзину
+    public void addToCart(String productName) {
+        returnWebElement(productName).findElement(By.xpath("./ancestor::div[@class = 'inventory_item_description']//button")).click();
     }
 
+    /***
+     *
+     * @param productName
+     * @param addOrDelete: true - добавить, false - удалить
+     * @return
+     */
+    public ProductsPage addOrDeleteProduct(String productName, Boolean addOrDelete) {
+        logger.info("Выполнение Step(Method) Добавление/Удаление товара в/из карзины началось...");
+        if (addOrDelete == true) {
+            logger.debug(String.format("Нажатие кнопки ADD TO CART товара %s",productName));
+            addToCart(productName);
+        } else {
+            logger.debug(String.format("Нажатие кнопки ADD TO CART товара %s", productName));
+            for (int i = 0; i < 2; i++) {
+                addToCart(productName);
+            }
+            logger.debug(String.format("Нажатие кнопки REMOVE товара %s", productName));
+        }
+        return new ProductsPage(driver,false);
+    }
 
+    public YourCartPage clickCartButton() {
+        logger.debug("Нажатие на кнопки SHOPPING CART");
+        cartButton.click();
+        return new YourCartPage(driver, true);
+    }
 
 
 }
